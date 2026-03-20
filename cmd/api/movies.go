@@ -3,12 +3,24 @@ import(
 	"fmt"
 	"net/http"
 	"time"
+	"encoding/json"
 
 	"greenlight.maleykaheybatova.net/internal/data"
 )
 
 func (app *application) createMovieHandler(w http.ResponseWriter, r *http.Request) {
-fmt.Fprintln(w, "create a new movie")
+	var input struct{
+		Title string `json:"title"`       //create input struct for decoding
+		Year int32 `json:"year"`
+		Runtime int32 `json:"runtime"`
+		Genres []string `json:"genres"`
+	}
+	err := json.NewDecoder(r.Body).Decode(&input)  //use pointer or get json.InvalidUnmarshalError
+	if err != nil{
+		app.errorResponse(w,r,http.StatusBadRequest,err.Error())
+		return
+	}
+	fmt.Fprintf(w,"%+v\n",input)
 }
 
 func (app *application) showMovieHandler(w http.ResponseWriter, r *http.Request) {
