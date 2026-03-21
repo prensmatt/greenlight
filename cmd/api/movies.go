@@ -11,7 +11,7 @@ func (app *application) createMovieHandler(w http.ResponseWriter, r *http.Reques
 	var input struct{
 		Title string `json:"title"`       //create input struct for decoding
 		Year int32 `json:"year"`
-		Runtime int32 `json:"runtime"`
+		Runtime data.Runtime `json:"runtime"`
 		Genres []string `json:"genres"`
 	}
 	err := app.readJSON(w,r,&input)  //use pointer or get json.InvalidUnmarshalError
