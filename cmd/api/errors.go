@@ -6,7 +6,10 @@ import(
 
 //prints error
 func(app *application) logError(r *http.Request, err error){
-	app.logger.Println(err)
+	app.logger.PrintError(err, map[string]string{
+		"request_method": r.Method,
+		"request_url": r.URL.String(),
+	})
 }
 
 //Handles sending a JSON-formatted error response to the client and logs any failure during the process.
