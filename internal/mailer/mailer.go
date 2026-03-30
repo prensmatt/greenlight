@@ -8,6 +8,7 @@ import(
 	"github.com/go-mail/mail/v2"
 )
 
+//go:embed templates/*.tmpl
 var templateFS embed.FS
 
 type Mailer struct{
@@ -50,7 +51,7 @@ func(m Mailer) Send(recipient, templateFile string, data interface{}) error{
 
 	msg:= mail.NewMessage()
 	msg.SetHeader("To",recipient)
-	msg.SetHeader("From",sender)
+	msg.SetHeader("From",m.sender)
 	msg.SetHeader("Subject",subject.String())
 	msg.SetHeader("text/plain",plainBody.String())
 	msg.AddAlternative("text/html",htmlBody.String())
