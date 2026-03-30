@@ -2,6 +2,7 @@ package main
 import(
 	"errors"
 	"net/http"
+	"fmt"
 
 	"greenlight.maleykaheybatova.net/internal/data"
 	"greenlight.maleykaheybatova.net/internal/validator"
@@ -50,6 +51,13 @@ func(app *application) registerUserHandler(w http.ResponseWriter, r *http.Reques
 	}
 
 	go func(){
+
+		defer func(){
+			if err := recover(); err != nil{
+				app.logger.PrintError(fmt.Errorf("%s",err),nil)
+			}
+		}()
+
 		err = app.mailer.Send(user.Email, "user_welcome.tmpl",user)
 		if err != nil{
 			app.logger.PrintError(err,nil)
