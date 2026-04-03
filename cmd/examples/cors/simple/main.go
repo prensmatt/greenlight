@@ -1,5 +1,6 @@
 package main
-import(
+
+import (
 	"flag"
 	"log"
 	"net/http"
@@ -31,13 +32,13 @@ const html = `
 </body>
 </html>`
 
-func main(){
-	addr := flag.String("addr",":9000","Server address")
+func main() {
+	addr := flag.String("addr", ":9000", "Server address")
 	flag.Parse()
 
-	log.Printf("starting server on %s",*addr)
+	log.Printf("starting server on %s", *addr)
 
-	err := http.ListenAndServe(*addr, http.HandlerFunc(func(w http.ResponseWriter, r *http.Request){
+	err := http.ListenAndServe(*addr, http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte(html))
 	}))
 	log.Fatal(err)
