@@ -54,7 +54,7 @@ vendor:
 	go mod vendor
 
 current_time = $(shell powershell -Command "Get-Date -Format 'yyyy-MM-ddTHH:mm:ssZ'")
-git_description = $(shell git describe --always --dirty)
+git_description = $(shell git describe --always --dirty --tags --long)
 linker_flags = '-s -X main.buildTime=${current_time} -X main.version=${git_description}'
 
 .PHONY: build/api
