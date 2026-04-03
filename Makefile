@@ -53,8 +53,12 @@ vendor:
 	@echo Vendoring dependencies...
 	go mod vendor
 
+current_time = $(shell powershell -Command "Get-Date -Format 'yyyy-MM-ddTHH:mm:ssZ'")
+git_description = $(shell git describe --always --dirty)
+linker_flags = '-s -X main.buildTime=${current_time} -X main.version=${git_description}'
+
 .PHONY: build/api
 build/api:
 	@echo Building cmd/api...
-	go build -ldflags="-s" -o=./bin/api.exe ./cmd/api
-	set GOOS=linux&& set GOARCH=amd64&& go build -ldflags="-s" -o=./bin/linux_amd64/api ./cmd/api
+	go build -ldflags=${linker_flags} -o=.\bin\api.exe .\cmd\api
+	set GOOS=linux&& set GOARCH=amd64&& go build -ldflags="-s -X main.buildTime=$(current_time)" -o=.\bin\linux_amd64\api .\cmd\api
